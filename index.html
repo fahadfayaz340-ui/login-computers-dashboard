@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Computers | Shop Management Dashboard</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icon Library -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- PWA App Support -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#00f0ff">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js').catch(console.error);
+      }
+    </script>
+    
+    <!-- Custom Style Sheet -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="logo-container">
+                <div class="logo-icon">
+                    <i data-lucide="power"></i>
+                </div>
+                <div class="logo-text">LOGIN<span>COMPUTERS</span></div>
+            </div>
+            
+            <nav>
+                <ul class="nav-links">
+                    <li class="nav-item active" data-target="dashboard-view" id="nav-btn-dashboard">
+                        <a href="#">
+                            <i data-lucide="layout-dashboard"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" data-target="repairs-view" id="nav-btn-repairs">
+                        <a href="#">
+                            <i data-lucide="wrench"></i>
+                            <span>Repair Jobs</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" data-target="inventory-view" id="nav-btn-inventory">
+                        <a href="#">
+                            <i data-lucide="package"></i>
+                            <span>Inventory Stock</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" data-target="invoice-view" id="nav-btn-invoice">
+                        <a href="#">
+                            <i data-lucide="file-text"></i>
+                            <span>Create Invoice</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <p>Login Computers</p>
+                <p>Chadoora, Budgam</p>
+                <p>Ph: 9906405769</p>
+            </div>
+        </aside>
+
+        <!-- Main Workspace -->
+        <div class="main-wrapper">
+            <!-- Top Header -->
+            <header class="main-header">
+                <div class="header-title-area">
+                    <h1 id="header-view-title">Shop Dashboard</h1>
+                </div>
+                <div class="header-actions">
+                    <div class="date-badge">
+                        <i data-lucide="calendar"></i>
+                        <span id="current-date">Saturday, June 27, 2026</span>
+                    </div>
+                    <button class="quick-add-btn" id="open-new-job-modal-btn">
+                        <i data-lucide="plus-circle"></i> New Repair Job
+                    </button>
+                </div>
+            </header>
+
+            <!-- Interactive Views Container -->
+            <main class="content-body">
+
+                <!-- 1. DASHBOARD HOME VIEW -->
+                <section id="dashboard-view" class="view-section active">
+                    <!-- Stats Grid -->
+                    <div class="stats-grid">
+                        <div class="stat-card blue">
+                            <div class="stat-info">
+                                <h3>Active Repairs</h3>
+                                <p id="stat-active-count">0</p>
+                            </div>
+                            <div class="stat-icon-wrapper"><i data-lucide="activity"></i></div>
+                        </div>
+                        <div class="stat-card amber">
+                            <div class="stat-info">
+                                <h3>Pending Diagnostics</h3>
+                                <p id="stat-pending-count">0</p>
+                            </div>
+                            <div class="stat-icon-wrapper"><i data-lucide="hourglass"></i></div>
+                        </div>
+                        <div class="stat-card emerald">
+                            <div class="stat-info">
+                                <h3>Earnings (This Month)</h3>
+                                <p id="stat-earnings-count">₹0</p>
+                            </div>
+                            <div class="stat-icon-wrapper"><i data-lucide="indian-rupee"></i></div>
+                        </div>
+                        <div class="stat-card rose">
+                            <div class="stat-info">
+                                <h3>Low Stock Alert</h3>
+                                <p id="stat-low-stock-count">0</p>
+                            </div>
+                            <div class="stat-icon-wrapper"><i data-lucide="alert-triangle"></i></div>
+                        </div>
+                    </div>
+
+                    <!-- Dashboard Layout Columns -->
+                    <div class="dashboard-grid">
+                        <!-- Left Panel: Recent Repairs -->
+                        <div class="dashboard-panel">
+                            <div class="panel-header">
+                                <h2 id="recent-repairs-title"><i data-lucide="history"></i> Recent Repair Tickets</h2>
+                                <button class="filter-btn active" onclick="document.getElementById('nav-btn-repairs').click();" style="padding:4px 10px; font-size:0.75rem;">View All</button>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="custom-table" id="recent-repairs-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Job ID</th>
+                                            <th>Device / Model</th>
+                                            <th>Customer Name</th>
+                                            <th>Status</th>
+                                            <th>Total Bill</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="recent-repairs-table-body">
+                                        <!-- Populated via Javascript -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Right Panel: Quick Actions & Charts -->
+                        <div class="dashboard-panel">
+                            <div class="panel-header">
+                                <h2><i data-lucide="zap"></i> Quick Operations</h2>
+                            </div>
+                            <div class="quick-actions-list">
+                                <button class="action-card-btn" id="quick-act-new-job" onclick="document.getElementById('open-new-job-modal-btn').click();">
+                                    <div class="action-icon"><i data-lucide="laptop"></i></div>
+                                    <div class="action-details">
+                                        <h4>Log Repair Job</h4>
+                                        <p>Create a customer repair receipt</p>
+                                    </div>
+                                </button>
+                                <button class="action-card-btn purple" id="quick-act-stock" onclick="document.getElementById('open-new-inventory-modal-btn').click();">
+                                    <div class="action-icon"><i data-lucide="package-plus"></i></div>
+                                    <div class="action-details">
+                                        <h4>Add Stock Item</h4>
+                                        <p>Log new spares or computer accessories</p>
+                                    </div>
+                                </button>
+                                <button class="action-card-btn pink" id="quick-act-invoice" onclick="document.getElementById('nav-btn-invoice').click();">
+                                    <div class="action-icon"><i data-lucide="shopping-cart"></i></div>
+                                    <div class="action-details">
+                                        <h4>Sell / Bill Customer</h4>
+                                        <p>Generate invoice & share on WhatsApp</p>
+                                    </div>
+                                </button>
+                            </div>
+                            
+                            <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 24px 0;">
+                            
+                            <div class="panel-header" style="margin-bottom:12px;">
+                                <h2><i data-lucide="trending-up"></i> Job Status Distribution</h2>
+                            </div>
+                            <div class="earnings-summary-box">
+                                <div class="earnings-bar-container">
+                                    <div class="earnings-bar-item">
+                                        <div class="bar-label-row">
+                                            <span>Pending Diagnostics</span>
+                                            <span id="bar-pending-label">0%</span>
+                                        </div>
+                                        <div class="bar-bg">
+                                            <div class="bar-fill pink" id="bar-pending-fill"></div>
+                                        </div>
+                                    </div>
+                                    <div class="earnings-bar-item">
+                                        <div class="bar-label-row">
+                                            <span>In Progress</span>
+                                            <span id="bar-progress-label">0%</span>
+                                        </div>
+                                        <div class="bar-bg">
+                                            <div class="bar-fill purple" id="bar-progress-fill"></div>
+                                        </div>
+                                    </div>
+                                    <div class="earnings-bar-item">
+                                        <div class="bar-label-row">
+                                            <span>Completed & Delivered</span>
+                                            <span id="bar-completed-label">0%</span>
+                                        </div>
+                                        <div class="bar-bg">
+                                            <div class="bar-fill" id="bar-completed-fill"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2. REPAIR JOBS TRACKER -->
+                <section id="repairs-view" class="view-section">
+                    <div class="filter-search-bar">
+                        <div class="search-input-wrapper">
+                            <i data-lucide="search"></i>
+                            <input type="text" id="repairs-search" placeholder="Search by Job ID, name, phone, or model...">
+                        </div>
+                        <div class="filters-group">
+                            <button class="filter-btn active" onclick="filterRepairs('all')">All</button>
+                            <button class="filter-btn" onclick="filterRepairs('pending')">Pending</button>
+                            <button class="filter-btn" onclick="filterRepairs('progress')">In Progress</button>
+                            <button class="filter-btn" onclick="filterRepairs('completed')">Completed</button>
+                            <button class="filter-btn" onclick="filterRepairs('delivered')">Delivered</button>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-panel">
+                        <div class="table-responsive">
+                            <table class="custom-table" id="repairs-list-table">
+                                <thead>
+                                    <tr>
+                                        <th>Job ID</th>
+                                        <th>Device Model</th>
+                                        <th>Customer</th>
+                                        <th>Phone</th>
+                                        <th>Status</th>
+                                        <th>Est Price</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="repairs-table-body">
+                                    <!-- Populated via Javascript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 3. INVENTORY STOCK MANAGEMENT -->
+                <section id="inventory-view" class="view-section">
+                    <div class="stock-warning-alert" id="low-stock-alert-container" style="display:none;">
+                        <!-- Inserted dynamically -->
+                    </div>
+
+                    <div class="filter-search-bar">
+                        <div class="search-input-wrapper">
+                            <i data-lucide="search"></i>
+                            <input type="text" id="inventory-search" placeholder="Search by item name or category...">
+                        </div>
+                        <button class="quick-add-btn" id="open-new-inventory-modal-btn">
+                            <i data-lucide="plus-circle"></i> Add New Part / Stock
+                        </button>
+                    </div>
+
+                    <div class="dashboard-panel">
+                        <div class="table-responsive">
+                            <table class="custom-table" id="inventory-list-table">
+                                <thead>
+                                    <tr>
+                                        <th>Item SKU</th>
+                                        <th>Part Name</th>
+                                        <th>Category</th>
+                                        <th>Selling Price</th>
+                                        <th>Stock Quantity</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="inventory-table-body">
+                                    <!-- Populated via Javascript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 4. INVOICE BUILDER -->
+                <section id="invoice-view" class="view-section">
+                    <div class="invoice-workspace">
+                        <!-- Left pane: Builder Forms -->
+                        <div class="invoice-builder-card">
+                            <h2 style="font-size:1.1rem; margin-bottom:16px; display:flex; align-items:center; gap:8px;">
+                                <i data-lucide="pen-tool"></i> Billing Items Builder
+                            </h2>
+                            
+                            <!-- Invoice Meta Fields -->
+                            <div class="invoice-header-fields">
+                                <div class="form-group">
+                                    <label>Customer Name</label>
+                                    <input type="text" id="invoice-cust-name" class="form-control" placeholder="Walk-in Customer">
+                                </div>
+                                <div class="form-group">
+                                    <label>Customer WhatsApp Phone</label>
+                                    <input type="text" id="invoice-cust-phone" class="form-control" placeholder="e.g. 99064xxxxx">
+                                </div>
+                                <div class="form-group">
+                                    <label>Bill Discount (₹)</label>
+                                    <input type="number" id="invoice-discount-input" class="form-control" placeholder="0" value="0">
+                                </div>
+                            </div>
+                            
+                            <hr style="border:0; border-top: 1px solid var(--border-color); margin:16px 0;">
+                            
+                            <!-- Add Inventory Spares Panel -->
+                            <h3 style="font-size:0.9rem; color:var(--primary); margin-bottom:12px;">Option A: Sell Hardware Part / Accessories</h3>
+                            <div style="display:flex; gap:16px; margin-bottom:20px; align-items:flex-end;">
+                                <div class="form-group" style="flex-grow:1; margin-bottom:0;">
+                                    <label>Choose Item</label>
+                                    <select id="inv-select-item" class="form-control">
+                                        <!-- Loaded dynamically -->
+                                    </select>
+                                </div>
+                                <div class="form-group" style="width:100px; margin-bottom:0;">
+                                    <label>Qty</label>
+                                    <input type="number" id="inv-item-qty" class="form-control" value="1" min="1">
+                                </div>
+                                <button class="btn btn-secondary" onclick="addSelectedItemToInvoice()" style="height:40px; padding: 0 16px;"><i data-lucide="plus"></i> Add Item</button>
+                            </div>
+                            
+                            <!-- Add Custom Labor/Charges Panel -->
+                            <h3 style="font-size:0.9rem; color:var(--secondary); margin-bottom:12px;">Option B: Add Labor, Repairs, or Custom Services</h3>
+                            <div style="display:grid; grid-template-columns: 2fr 1fr 1fr auto; gap:16px; margin-bottom:24px; align-items:flex-end;">
+                                <div class="form-group" style="margin-bottom:0;">
+                                    <label>Description / Job Work</label>
+                                    <input type="text" id="inv-custom-desc" class="form-control" placeholder="e.g. Broken hinge repair work, OS install labor">
+                                </div>
+                                <div class="form-group" style="margin-bottom:0;">
+                                    <label>Service Fee (₹)</label>
+                                    <input type="number" id="inv-custom-price" class="form-control" placeholder="500">
+                                </div>
+                                <div class="form-group" style="margin-bottom:0;">
+                                    <label>Qty</label>
+                                    <input type="number" id="inv-custom-qty" class="form-control" value="1" min="1">
+                                </div>
+                                <button class="btn btn-secondary" onclick="addCustomLineToInvoice()" style="height:40px; padding: 0 16px;"><i data-lucide="plus"></i> Add Service</button>
+                            </div>
+                            
+                            <hr style="border:0; border-top: 1px solid var(--border-color); margin:20px 0;">
+                            
+                            <!-- Items List Table -->
+                            <div class="table-responsive">
+                                <table class="custom-table invoice-items-table">
+                                    <thead>
+                                        <tr>
+                                            <th style="width:50px;">#</th>
+                                            <th>Description</th>
+                                            <th>Rate</th>
+                                            <th style="width:80px;">Qty</th>
+                                            <th>Total (₹)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="invoice-lines-list">
+                                        <!-- Loaded dynamically -->
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <!-- Totals Panel -->
+                            <div class="invoice-totals">
+                                <div class="total-row">
+                                    <span>Subtotal:</span>
+                                    <span id="invoice-subtotal-val">₹0</span>
+                                </div>
+                                <div class="total-row grand-total">
+                                    <span>Grand Total:</span>
+                                    <span id="invoice-grand-val">₹0</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Right pane: Printable Layout Preview -->
+                        <div>
+                            <p class="preview-title">Realtime Invoice Receipt Preview</p>
+                            <div class="invoice-preview-card">
+                                <div class="actual-invoice-preview" id="print-area">
+                                    <div class="preview-header">
+                                        <div class="preview-shop-name">LOGIN COMPUTERS</div>
+                                        <div style="font-size:0.65rem; color:#555; margin-top:2px;">Computer Sales, Expert Repairs & Security Systems</div>
+                                        <div style="font-size:0.6rem; color:#555;">Chadoora Market, Budgam | Mobile: 9906405769</div>
+                                    </div>
+                                    
+                                    <div class="preview-meta">
+                                        <div>
+                                            <div><strong>Invoice To:</strong> <span id="preview-customer-name">Walk-in Customer</span></div>
+                                            <div><strong>Contact No:</strong> <span id="preview-customer-phone">N/A</span></div>
+                                        </div>
+                                        <div style="text-align: right;">
+                                            <div><strong>Invoice No:</strong> <span id="invoice-number-val">INV-102934</span></div>
+                                            <div><strong>Date:</strong> <span id="invoice-date-val">27/06/2026</span></div>
+                                        </div>
+                                    </div>
+                                    
+                                    <table class="preview-table">
+                                        <thead>
+                                            <tr>
+                                                <th style="text-align:left;">Item / Work Description</th>
+                                                <th>Qty</th>
+                                                <th>Rate</th>
+                                                <th>Amount</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="preview-items-list">
+                                            <!-- Dyn rows -->
+                                        </tbody>
+                                    </table>
+                                    
+                                    <div class="preview-totals-box">
+                                        <div class="preview-total-row">
+                                            <span>Subtotal:</span>
+                                            <span id="preview-subtotal">₹0</span>
+                                        </div>
+                                        <div class="preview-total-row">
+                                            <span>Discount:</span>
+                                            <span id="preview-discount">-₹0</span>
+                                        </div>
+                                        <div class="preview-total-row grand">
+                                            <span>Total Bill:</span>
+                                            <span id="preview-grand">₹0</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="preview-footer">
+                                        <p>Terms: Software repairs carry 7-day test warranty. Hardware parts carry manufacturer warranty.</p>
+                                        <p style="font-weight:700; margin-top:4px; font-size:0.7rem;">*** Thank You for Your Visit! ***</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div style="display:flex; flex-direction:column; gap:10px; margin-top:20px;">
+                                <button class="btn btn-primary btn-wide" onclick="printReceipt()"><i data-lucide="printer"></i> Print Receipt & Process Sale</button>
+                                <button class="btn btn-secondary btn-wide btn-wa-green" onclick="shareInvoiceWhatsApp()"><i data-lucide="share-2"></i> Share Invoice on WhatsApp</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- ==================== MODAL OVERLAYS ==================== -->
+    
+    <!-- 1. NEW JOB MODAL -->
+    <div class="modal-overlay" id="new-job-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Log New Computer Repair Job</h3>
+                <button class="close-modal-btn"><i data-lucide="x"></i></button>
+            </div>
+            <form id="new-job-form">
+                <div class="modal-body">
+                    <div class="form-grid-2">
+                        <div class="form-group">
+                            <label>Receipt ID</label>
+                            <input type="text" id="new-job-id" class="form-control" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>Date Logged</label>
+                            <input type="text" class="form-control" value="Auto-generated Today" readonly>
+                        </div>
+                    </div>
+                    
+                    <div class="form-grid-2">
+                        <div class="form-group">
+                            <label>Customer Full Name *</label>
+                            <input type="text" id="cust-name" class="form-control" placeholder="Customer name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Customer Mobile No *</label>
+                            <input type="tel" id="cust-phone" class="form-control" placeholder="10-digit number" required pattern="[0-9]{10}">
+                        </div>
+                    </div>
+                    
+                    <div class="form-grid-2">
+                        <div class="form-group">
+                            <label>Device Category</label>
+                            <select id="dev-type" class="form-control">
+                                <option value="laptop">Laptop / Notebook</option>
+                                <option value="desktop">Desktop / Workstation</option>
+                                <option value="gaming">Gaming Custom Rig</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Device Brand / Model *</label>
+                            <input type="text" id="dev-model" class="form-control" placeholder="e.g. Dell Vostro 3510, Custom" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Problem Reported *</label>
+                        <textarea id="dev-problem" class="form-control" placeholder="Describe customer issues..." required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Assigned Service / Repair Task</label>
+                        <input type="text" id="dev-service" class="form-control" placeholder="e.g. Motherboard chip level repair, OS clean reinstall">
+                    </div>
+                    
+                    <div class="form-grid-2">
+                        <div class="form-group">
+                            <label>Estimated Cost (₹) *</label>
+                            <input type="number" id="dev-cost" class="form-control" placeholder="Total Estimated Fee" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Advance Payment Paid (₹)</label>
+                            <input type="number" id="dev-advance" class="form-control" value="0">
+                        </div>
+                    </div>
+                    
+                    <div class="form-grid-2">
+                        <div class="form-group">
+                            <label>Initial Status</label>
+                            <select id="dev-status" class="form-control">
+                                <option value="pending">Pending Diagnostics</option>
+                                <option value="progress">In Progress</option>
+                                <option value="completed">Completed / Ready</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Internal Technical Notes (Private)</label>
+                        <textarea id="dev-notes" class="form-control" placeholder="Add specific brands of SSD, motherboard diagnostic progress..."></textarea>
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary btn-close-modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Create Ticket Receipt</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 2. INVENTORY MODAL -->
+    <div class="modal-overlay" id="new-inventory-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="inventory-modal-title">Log New Inventory Stock Item</h3>
+                <button class="close-modal-btn"><i data-lucide="x"></i></button>
+            </div>
+            <form id="new-inventory-form">
+                <input type="hidden" id="editing-inv-id">
+                <div class="modal-body">
+                    <div class="form-grid-2">
+                        <div class="form-group">
+                            <label>Item SKU ID</label>
+                            <input type="text" id="new-inventory-id" class="form-control" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>Part / Item Category</label>
+                            <select id="inv-category" class="form-control">
+                                <option value="SSD">Solid State Drives (SSDs)</option>
+                                <option value="RAM">Random Access Memory (RAM)</option>
+                                <option value="Keyboard">Keyboards & Mice</option>
+                                <option value="Motherboard">Motherboards / ICs</option>
+                                <option value="Thermal Paste">Thermal paste / cooling</option>
+                                <option value="Networking">Routers & Cables</option>
+                                <option value="CCTV">Security CCTV Cameras</option>
+                                <option value="Accessories">Cables / Adpaters / Accessories</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Item / Part Brand Name *</label>
+                        <input type="text" id="inv-name" class="form-control" placeholder="e.g. Crucial BX500 240GB SSD" required>
+                    </div>
+                    
+                    <div class="form-grid-2">
+                        <div class="form-group">
+                            <label>Selling Price (₹) *</label>
+                            <input type="number" id="inv-price" class="form-control" placeholder="e.g. 2200" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-grid-2">
+                        <div class="form-group">
+                            <label>Stock Quantity (Units) *</label>
+                            <input type="number" id="inv-stock" class="form-control" placeholder="e.g. 10" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Minimum Stock Threshold (Low stock alert) *</label>
+                            <input type="number" id="inv-min-stock" class="form-control" value="2" required>
+                        </div>
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary btn-close-modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save Item</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ==================== TICKET DETAILS SLIDE OUT DRAWER ==================== -->
+    <div class="drawer-overlay" id="details-drawer-overlay" onclick="closeDetailsDrawer()"></div>
+    <div class="drawer" id="details-drawer">
+        <div class="drawer-header">
+            <h3>Ticket Details <span id="drawer-ticket-id" style="color:var(--primary);">JOB-101</span></h3>
+            <button class="close-modal-btn" onclick="closeDetailsDrawer()"><i data-lucide="x"></i></button>
+        </div>
+        <div class="drawer-body">
+            <div class="drawer-section">
+                <h4>Customer Info</h4>
+                <p><strong id="drawer-customer-name">Faisal Ahmad</strong></p>
+                <p>Phone: <span id="drawer-customer-phone">9906123456</span></p>
+            </div>
+            
+            <div class="drawer-section">
+                <h4>Device Info</h4>
+                <p id="drawer-device-model">Dell Inspiron 15 3520</p>
+            </div>
+            
+            <div class="drawer-section">
+                <h4>Problem Stated</h4>
+                <div class="info-highlight-box">
+                    <p id="drawer-problem" style="font-size:0.85rem; font-style:italic;">Very slow booting, taking 5 minutes to reach desktop.</p>
+                </div>
+            </div>
+            
+            <div class="drawer-section">
+                <h4>Assigned Service</h4>
+                <p id="drawer-service">SSD Upgrade (Super Fast Boot)</p>
+            </div>
+            
+            <div class="drawer-section">
+                <h4>Payment Summary</h4>
+                <div class="row-2">
+                    <div class="info-highlight-box">
+                        <span style="font-size:0.7rem; color:var(--text-muted);">Total Cost</span>
+                        <p id="drawer-cost" style="font-weight:700; color:var(--primary); font-size:1.1rem;">₹2500</p>
+                    </div>
+                    <div class="info-highlight-box">
+                        <span style="font-size:0.7rem; color:var(--text-muted);">Advance Paid</span>
+                        <p id="drawer-advance" style="font-weight:700; color:var(--status-completed); font-size:1.1rem;">₹500</p>
+                    </div>
+                </div>
+                <div class="info-highlight-box" style="margin-top:10px; display:flex; justify-content:space-between; align-items:center;">
+                    <span style="font-size:0.8rem; font-weight:600;">Balance Pending:</span>
+                    <span id="drawer-balance" style="font-weight:800; color:var(--accent); font-size:1.1rem;">₹2000</span>
+                </div>
+            </div>
+            
+            <hr style="border:0; border-top:1px solid var(--border-color);">
+            
+            <!-- Update Status Actions -->
+            <div class="drawer-section">
+                <h4>Update Status & Notes</h4>
+                <div class="form-group" style="margin-top:8px;">
+                    <label>Current status</label>
+                    <select id="drawer-status-select" class="form-control">
+                        <option value="pending">Pending Diagnostics</option>
+                        <option value="progress">In Progress</option>
+                        <option value="completed">Completed / Ready</option>
+                        <option value="delivered">Delivered / Paid</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Work notes / Diagnostics details</label>
+                    <textarea id="drawer-notes" class="form-control" style="min-height:90px; font-size:0.85rem;" placeholder="Mention what parts were used, firmware changes..."></textarea>
+                </div>
+            </div>
+        </div>
+        
+        <div class="drawer-footer">
+            <button class="btn btn-primary" onclick="saveTicketStatusChange()"><i data-lucide="save"></i> Save Changes</button>
+            <a href="#" id="drawer-wa-btn" class="btn btn-secondary btn-wa-green" target="_blank"><i data-lucide="message-square"></i> Send WhatsApp Status Update</a>
+            <button class="btn btn-secondary" onclick="closeDetailsDrawer()">Close</button>
+        </div>
+    </div>
+
+    <!-- ==================== TOAST NOTIFICATION STACK ==================== -->
+    <div class="toast-container" id="toast-container">
+        <!-- Dyn content -->
+    </div>
+
+    <!-- Application Controller Logic -->
+    <script src="app.js"></script>
+
+</body>
+</html>
