@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>Login Computers | Shop Management Dashboard</title>
     
     <!-- Google Fonts -->
@@ -31,7 +31,7 @@
 
     <div class="app-container">
         <!-- Sidebar Navigation -->
-        <aside class="sidebar">
+        <aside class="sidebar" id="sidebar">
             <div class="logo-container">
                 <div class="logo-icon">
                     <i data-lucide="power"></i>
@@ -75,12 +75,20 @@
             </div>
         </aside>
 
+        <!-- Mobile Menu Overlay -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
         <!-- Main Workspace -->
         <div class="main-wrapper">
             <!-- Top Header -->
             <header class="main-header">
-                <div class="header-title-area">
-                    <h1 id="header-view-title">Shop Dashboard</h1>
+                <div class="header-left">
+                    <button class="mobile-menu-btn" id="mobileMenuBtn" title="Toggle Menu">
+                        <i data-lucide="menu"></i>
+                    </button>
+                    <div class="header-title-area">
+                        <h1 id="header-view-title">Shop Dashboard</h1>
+                    </div>
                 </div>
                 <div class="header-actions">
                     <div class="date-badge">
@@ -88,7 +96,7 @@
                         <span id="current-date">Saturday, June 27, 2026</span>
                     </div>
                     <button class="quick-add-btn" id="open-new-job-modal-btn">
-                        <i data-lucide="plus-circle"></i> New Repair Job
+                        <i data-lucide="plus-circle"></i> <span>New Repair Job</span>
                     </button>
                 </div>
             </header>
@@ -276,7 +284,7 @@
                             <input type="text" id="inventory-search" placeholder="Search by item name or category...">
                         </div>
                         <button class="quick-add-btn" id="open-new-inventory-modal-btn">
-                            <i data-lucide="plus-circle"></i> Add New Part / Stock
+                            <i data-lucide="plus-circle"></i> <span>Add New Part / Stock</span>
                         </button>
                     </div>
 
@@ -330,8 +338,8 @@
                             
                             <!-- Add Inventory Spares Panel -->
                             <h3 style="font-size:0.9rem; color:var(--primary); margin-bottom:12px;">Option A: Sell Hardware Part / Accessories</h3>
-                            <div style="display:flex; gap:16px; margin-bottom:20px; align-items:flex-end;">
-                                <div class="form-group" style="flex-grow:1; margin-bottom:0;">
+                            <div style="display:flex; gap:16px; margin-bottom:20px; align-items:flex-end; flex-wrap: wrap;">
+                                <div class="form-group" style="flex-grow:1; margin-bottom:0; min-width: 200px;">
                                     <label>Choose Item</label>
                                     <select id="inv-select-item" class="form-control">
                                         <!-- Loaded dynamically -->
@@ -705,6 +713,45 @@
 
     <!-- Application Controller Logic -->
     <script src="app.js"></script>
+    
+    <!-- Mobile Menu Handler -->
+    <script>
+        // Mobile menu toggle functionality
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', () => {
+                sidebar.classList.toggle('active');
+                sidebarOverlay.classList.toggle('active');
+            });
+        }
+
+        if (sidebarOverlay) {
+            sidebarOverlay.addEventListener('click', () => {
+                sidebar.classList.remove('active');
+                sidebarOverlay.classList.remove('active');
+            });
+        }
+
+        // Close sidebar when a nav item is clicked
+        const navItems = document.querySelectorAll('.nav-item');
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                sidebar.classList.remove('active');
+                sidebarOverlay.classList.remove('active');
+            });
+        });
+
+        // Handle window resize - close sidebar on larger screens
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768) {
+                sidebar.classList.remove('active');
+                sidebarOverlay.classList.remove('active');
+            }
+        });
+    </script>
 
 </body>
 </html>
