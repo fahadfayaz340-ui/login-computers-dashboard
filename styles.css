@@ -1242,7 +1242,7 @@ textarea.form-control {
     }
 
     .nav-item a span {
-        display: none;
+        display: inline-block;
     }
 
     .nav-item a i {
@@ -1392,7 +1392,7 @@ textarea.form-control {
     }
 
     .quick-add-btn span {
-        display: none;
+        display: inline-block;
     }
 
     .quick-add-btn i {
