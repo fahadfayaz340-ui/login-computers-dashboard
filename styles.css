@@ -163,6 +163,57 @@ button, input, select, textarea {
     backdrop-filter: blur(10px);
 }
 
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.mobile-menu-btn {
+    display: none;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+
+.mobile-menu-btn:hover {
+    background: rgba(0, 242, 254, 0.1);
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(7, 5, 16, 0.75);
+    backdrop-filter: blur(4px);
+    z-index: 190;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.sidebar-overlay.active {
+    display: block;
+    opacity: 1;
+}
+
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
 .header-title-area h1 {
     font-size: 1.35rem;
     font-weight: 600;
@@ -1281,12 +1332,16 @@ textarea.form-control {
 
 /* Mobile: 768px and below */
 @media (max-width: 768px) {
+    .mobile-menu-btn {
+        display: flex !important;
+    }
+
     .sidebar {
         position: fixed;
-        left: -220px;
+        left: -270px;
         top: 0;
         height: 100vh;
-        width: 220px;
+        width: 260px;
         background-color: var(--bg-sidebar);
         border-right: 1px solid var(--border-color);
         padding: 16px 12px;
@@ -1294,8 +1349,8 @@ textarea.form-control {
         flex-direction: column;
         flex-shrink: 0;
         transition: left 0.3s ease-out;
-        z-index: 200;
-        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+        z-index: 2000;
+        box-shadow: 4px 0 20px rgba(0, 0, 0, 0.5);
     }
 
     .sidebar.active {
