@@ -5,10 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Computers | Shop Management Dashboard</title>
 
-    <!-- Multi-format Favicon & Embedded Fallback -->
+    <!-- Immediate Authentication Guard Script -->
+    <script>
+        if (sessionStorage.getItem("userLoggedIn") === "true") {
+            document.documentElement.classList.add("is-logged-in");
+        }
+    </script>
+
+    <!-- Multi-format Favicon (ICO + SVG + Data URI) -->
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="shortcut icon" href="favicon.ico">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23070510'/%3E%3Crect x='2' y='2' width='60' height='60' rx='14' fill='none' stroke='%2300f2fe' stroke-width='2'/%3E%3Cpath d='M 22 48 L 42 48 M 32 40 L 32 48' stroke='%2300f2fe' stroke-width='4' stroke-linecap='round'/%3E%3Crect x='12' y='14' width='40' height='26' rx='5' fill='%23120f24' stroke='%2300f2fe' stroke-width='3'/%3E%3Cpath d='M 32 20 L 32 26 M 26.5 23.5 A 6.5 6.5 0 1 0 37.5 23.5' stroke='%2300f2fe' stroke-width='2.5' stroke-linecap='round' fill='none'/%3E%3C/svg%3E">
-    <link rel="shortcut icon" href="favicon.svg">
     <link rel="apple-touch-icon" href="favicon.svg">
 
     <!-- Google Fonts -->
