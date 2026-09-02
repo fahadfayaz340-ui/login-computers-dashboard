@@ -200,10 +200,8 @@
             window.lucide.createIcons();
         }
 
-        // Auto-redirect if already authenticated
-        if (localStorage.getItem("userLoggedIn") === "true") {
-            window.location.href = "index.html";
-        }
+        // Clear legacy persistent auth tokens if present
+        localStorage.removeItem("userLoggedIn");
 
         document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -216,10 +214,10 @@
             const isValidPassword = (passwordInput === '9906405769');
 
             if (isValidUsername && isValidPassword) {
-                localStorage.setItem("userLoggedIn", "true");
-                localStorage.setItem("currentUser", "admin");
+                sessionStorage.setItem("userLoggedIn", "true");
+                sessionStorage.setItem("currentUser", "admin");
                 errorEl.style.display = "none";
-                window.location.href = "index.html";
+                window.location.replace("index.html");
             } else {
                 errorEl.textContent = "Access Denied: Incorrect username or password.";
                 errorEl.style.display = "block";

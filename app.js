@@ -95,16 +95,20 @@ function saveState() {
 
 // --- Logout Handler ---
 function logoutUser() {
-    localStorage.removeItem("userLoggedIn");
-    localStorage.removeItem("currentUser");
-    window.location.href = "login.html";
+    if (confirm("Are you sure you want to log out of Login Computers Dashboard?")) {
+        sessionStorage.removeItem("userLoggedIn");
+        sessionStorage.removeItem("currentUser");
+        localStorage.removeItem("userLoggedIn");
+        localStorage.removeItem("currentUser");
+        window.location.replace("login.html");
+    }
 }
 
 // --- Initialize App ---
 document.addEventListener("DOMContentLoaded", () => {
-    // Auth guard
-    if (localStorage.getItem("userLoggedIn") !== "true") {
-        window.location.href = "login.html";
+    // Auth guard: direct domain entry requires active session
+    if (sessionStorage.getItem("userLoggedIn") !== "true") {
+        window.location.replace("login.html");
         return;
     }
 

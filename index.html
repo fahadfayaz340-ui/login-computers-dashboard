@@ -8,10 +8,10 @@
     <link rel="alternate icon" href="favicon.svg">
     <link rel="apple-touch-icon" href="favicon.svg">
     
-    <!-- Authentication Guard: Restrict access to logged in Admin -->
+    <!-- Authentication Guard: Require active login session for direct domain access -->
     <script>
-        if (localStorage.getItem("userLoggedIn") !== "true") {
-            window.location.href = "login.html";
+        if (sessionStorage.getItem("userLoggedIn") !== "true") {
+            window.location.replace("login.html");
         }
     </script>
 
