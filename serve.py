@@ -14,11 +14,11 @@ class CustomHandler(Handler):
 try:
     with socketserver.TCPServer(("127.0.0.1", PORT), CustomHandler) as httpd:
         print(f"Login Computers Dashboard Server successfully started.")
-        print(f"Open http://localhost:{PORT} in your web browser.")
+        print(f"Open http://localhost:{PORT}/login.html in your web browser.")
         sys.stdout.flush()
         
-        # Auto-open browser
-        webbrowser.open(f"http://localhost:{PORT}")
+        # Auto-open browser directly to login page
+        webbrowser.open(f"http://localhost:{PORT}/login.html")
         
         httpd.serve_forever()
 except Exception as e:
