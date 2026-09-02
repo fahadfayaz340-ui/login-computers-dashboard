@@ -93,31 +93,87 @@ function saveState() {
     localStorage.setItem("login_computers_dashboard_state", JSON.stringify(state));
 }
 
-// --- Logout Handler ---
+// --- Authentication & Overlay System ---
+function checkAuthStatus() {
+    const overlay = document.getElementById("login-screen-overlay");
+    const appContainer = document.getElementById("appContainer");
+    const isLoggedIn = sessionStorage.getItem("userLoggedIn") === "true";
+
+    if (isLoggedIn) {
+        if (overlay) overlay.style.display = "none";
+        if (appContainer) appContainer.style.display = "flex";
+        return true;
+    } else {
+        if (overlay) overlay.style.display = "flex";
+        if (appContainer) appContainer.style.display = "none";
+        return false;
+    }
+}
+
+function handleOverlayLogin(e) {
+    e.preventDefault();
+    const userVal = document.getElementById("overlayUsername").value.trim();
+    const passVal = document.getElementById("overlayPassword").value.trim();
+    const errorEl = document.getElementById("overlayErrorMessage");
+
+    const isUserValid = (userVal.toLowerCase() === "admin" || userVal.toLowerCase() === "admin@logincomputers.com");
+    const isPassValid = (passVal === "9906405769");
+
+    if (isUserValid && isPassValid) {
+        sessionStorage.setItem("userLoggedIn", "true");
+        sessionStorage.setItem("currentUser", "admin");
+        if (errorEl) errorEl.style.display = "none";
+
+        // Unhide app & initialize view
+        checkAuthStatus();
+
+        if (window.lucide) window.lucide.createIcons();
+        renderDashboard();
+        updateCountsAndStats();
+    } else {
+        if (errorEl) {
+            errorEl.textContent = "Access Denied: Incorrect username or password.";
+            errorEl.style.display = "block";
+        }
+    }
+}
+
 function logoutUser() {
     if (confirm("Are you sure you want to log out of Login Computers Dashboard?")) {
         sessionStorage.removeItem("userLoggedIn");
         sessionStorage.removeItem("currentUser");
         localStorage.removeItem("userLoggedIn");
         localStorage.removeItem("currentUser");
-        window.location.replace("login.html");
+
+        // Clear password input field
+        const passIn = document.getElementById("overlayPassword");
+        const errorEl = document.getElementById("overlayErrorMessage");
+        if (passIn) passIn.value = "";
+        if (errorEl) errorEl.style.display = "none";
+
+        // Immediately show login overlay and hide app
+        checkAuthStatus();
     }
 }
 
 // --- Initialize App ---
 document.addEventListener("DOMContentLoaded", () => {
-    // Auth guard: direct domain entry requires active session
-    if (sessionStorage.getItem("userLoggedIn") !== "true") {
-        window.location.replace("login.html");
-        return;
+    loadState();
+
+    // Check overlay auth status
+    checkAuthStatus();
+
+    // Wire up overlay form submit
+    const overlayForm = document.getElementById("overlayLoginForm");
+    if (overlayForm) {
+        overlayForm.addEventListener("submit", handleOverlayLogin);
     }
 
-    loadState();
     initRouter();
     renderDashboard();
     initFormsAndModals();
     initInvoiceBuilder();
-    
+
     // Wire logout buttons
     const headerLogout = document.getElementById("logout-btn");
     if (headerLogout) {
@@ -127,11 +183,14 @@ document.addEventListener("DOMContentLoaded", () => {
     if (sidebarLogout) {
         sidebarLogout.addEventListener("click", logoutUser);
     }
-    
+
     // Set current date in header
     const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    document.getElementById("current-date").textContent = new Date().toLocaleDateString('en-US', dateOptions);
-    
+    const dateEl = document.getElementById("current-date");
+    if (dateEl) {
+        dateEl.textContent = new Date().toLocaleDateString('en-US', dateOptions);
+    }
+
     // Render initial counts
     updateCountsAndStats();
 });
