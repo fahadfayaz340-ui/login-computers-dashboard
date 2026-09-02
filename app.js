@@ -93,13 +93,36 @@ function saveState() {
     localStorage.setItem("login_computers_dashboard_state", JSON.stringify(state));
 }
 
+// --- Logout Handler ---
+function logoutUser() {
+    localStorage.removeItem("userLoggedIn");
+    localStorage.removeItem("currentUser");
+    window.location.href = "login.html";
+}
+
 // --- Initialize App ---
 document.addEventListener("DOMContentLoaded", () => {
+    // Auth guard
+    if (localStorage.getItem("userLoggedIn") !== "true") {
+        window.location.href = "login.html";
+        return;
+    }
+
     loadState();
     initRouter();
     renderDashboard();
     initFormsAndModals();
     initInvoiceBuilder();
+    
+    // Wire logout buttons
+    const headerLogout = document.getElementById("logout-btn");
+    if (headerLogout) {
+        headerLogout.addEventListener("click", logoutUser);
+    }
+    const sidebarLogout = document.getElementById("sidebar-logout-btn");
+    if (sidebarLogout) {
+        sidebarLogout.addEventListener("click", logoutUser);
+    }
     
     // Set current date in header
     const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Login Computers Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --bg-dark: #070510;
+            --bg-card: rgba(18, 15, 36, 0.85);
+            --primary: #00f2fe;
+            --secondary: #9b51e0;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --border: rgba(255, 255, 255, 0.12);
+            --danger: #ef4444;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background-image: radial-gradient(circle at 50% 30%, rgba(155, 81, 224, 0.18), transparent 70%),
+                              radial-gradient(circle at 80% 80%, rgba(0, 242, 254, 0.12), transparent 50%);
+        }
+        .login-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 40px 32px;
+            width: 100%;
+            max-width: 420px;
+            backdrop-filter: blur(16px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), 0 0 35px rgba(0, 242, 254, 0.12);
+        }
+        .brand {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        .brand h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.9rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
+        .brand h1 span { color: var(--primary); }
+        .brand p {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            margin-top: 6px;
+        }
+        .admin-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--primary);
+            background: rgba(0, 242, 254, 0.08);
+            border: 1px solid rgba(0, 242, 254, 0.25);
+            padding: 6px 14px;
+            border-radius: 20px;
+            margin: 0 auto 24px auto;
+            width: fit-content;
+            letter-spacing: 0.3px;
+        }
+        .error-msg {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            color: var(--danger);
+            font-size: 0.85rem;
+            padding: 12px 14px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+            text-align: center;
+            font-weight: 500;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        .input-wrapper input {
+            width: 100%;
+            padding: 13px 14px 13px 42px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text-main);
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+        .input-wrapper input:focus {
+            border-color: var(--primary);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 14px rgba(0, 242, 254, 0.25);
+        }
+        .input-icon {
+            position: absolute;
+            left: 14px;
+            color: var(--text-muted);
+            width: 18px;
+            height: 18px;
+            pointer-events: none;
+        }
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            border: none;
+            border-radius: 10px;
+            color: #fff;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 6px;
+            box-shadow: 0 4px 15px rgba(0, 242, 254, 0.2);
+        }
+        .submit-btn:hover {
+            opacity: 0.95;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(0, 242, 254, 0.3);
+        }
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+        .footer-note {
+            text-align: center;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 24px;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-card">
+        <div class="brand">
+            <h1>LOGIN<span>COMPUTERS</span></h1>
+            <p>Shop Management & Repair Tracker</p>
+        </div>
+
+        <div class="admin-badge">
+            <i data-lucide="shield-check" style="width:16px; height:16px;"></i> Protected Owner Access
+        </div>
+
+        <div id="errorMessage" class="error-msg"></div>
+
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <div class="input-wrapper">
+                    <i data-lucide="user" class="input-icon"></i>
+                    <input type="text" id="username" placeholder="admin" required autocomplete="username">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <div class="input-wrapper">
+                    <i data-lucide="key-round" class="input-icon"></i>
+                    <input type="password" id="password" placeholder="••••••••" required autocomplete="current-password">
+                </div>
+            </div>
+            <button type="submit" class="submit-btn">Sign In to Dashboard</button>
+        </form>
+
+        <div class="footer-note">
+            Login Computers • Chadoora, Budgam
+        </div>
+    </div>
+
+    <script>
+        // Render lucide icons
+        if (window.lucide) {
+            window.lucide.createIcons();
+        }
+
+        // Auto-redirect if already authenticated
+        if (localStorage.getItem("userLoggedIn") === "true") {
+            window.location.href = "index.html";
+        }
+
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const usernameInput = document.getElementById('username').value.trim();
+            const passwordInput = document.getElementById('password').value.trim();
+            const errorEl = document.getElementById('errorMessage');
+
+            // Credentials check: Username "admin", Password "9906405769"
+            const isValidUsername = (usernameInput.toLowerCase() === 'admin' || usernameInput.toLowerCase() === 'admin@logincomputers.com');
+            const isValidPassword = (passwordInput === '9906405769');
+
+            if (isValidUsername && isValidPassword) {
+                localStorage.setItem("userLoggedIn", "true");
+                localStorage.setItem("currentUser", "admin");
+                errorEl.style.display = "none";
+                window.location.href = "index.html";
+            } else {
+                errorEl.textContent = "Access Denied: Incorrect username or password.";
+                errorEl.style.display = "block";
+            }
+        });
+    </script>
+</body>
+</html>
