@@ -1432,6 +1432,17 @@ textarea.form-control {
     }
 }
 
+/* --- Authentication State Rules --- */
+#appContainer {
+    display: none;
+}
+html.is-logged-in #login-screen-overlay {
+    display: none !important;
+}
+html.is-logged-in #appContainer {
+    display: flex !important;
+}
+
 /* --- Full Screen Login Overlay --- */
 .login-overlay {
     position: fixed;

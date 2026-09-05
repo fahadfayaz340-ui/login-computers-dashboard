@@ -95,19 +95,13 @@ function saveState() {
 
 // --- Authentication & Overlay System ---
 function checkAuthStatus() {
-    const overlay = document.getElementById("login-screen-overlay");
-    const appContainer = document.getElementById("appContainer");
     const isLoggedIn = sessionStorage.getItem("userLoggedIn") === "true";
-
     if (isLoggedIn) {
-        if (overlay) overlay.style.display = "none";
-        if (appContainer) appContainer.style.display = "flex";
-        return true;
+        document.documentElement.classList.add("is-logged-in");
     } else {
-        if (overlay) overlay.style.display = "flex";
-        if (appContainer) appContainer.style.display = "none";
-        return false;
+        document.documentElement.classList.remove("is-logged-in");
     }
+    return isLoggedIn;
 }
 
 function handleOverlayLogin(e) {
