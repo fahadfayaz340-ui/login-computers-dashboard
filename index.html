@@ -391,54 +391,54 @@
                                 </div>
                             </div>
                             
-                            <hr style="border:0; border-top: 1px solid var(--border-color); margin:16px 0;">
+                            <hr class="invoice-divider">
                             
                             <!-- Add Inventory Spares Panel -->
-                            <h3 style="font-size:0.9rem; color:var(--primary); margin-bottom:12px;">Option A: Sell Hardware Part / Accessories</h3>
-                            <div style="display:flex; gap:16px; margin-bottom:20px; align-items:flex-end; flex-wrap: wrap;">
-                                <div class="form-group" style="flex-grow:1; margin-bottom:0; min-width: 200px;">
+                            <h3 class="invoice-section-title option-a-title">Option A: Sell Hardware Part / Accessories</h3>
+                            <div class="invoice-option-row invoice-option-a">
+                                <div class="form-group item-select-group">
                                     <label>Choose Item</label>
                                     <select id="inv-select-item" class="form-control">
                                         <!-- Loaded dynamically -->
                                     </select>
                                 </div>
-                                <div class="form-group" style="width:100px; margin-bottom:0;">
+                                <div class="form-group item-qty-group">
                                     <label>Qty</label>
                                     <input type="number" id="inv-item-qty" class="form-control" value="1" min="1">
                                 </div>
-                                <button class="btn btn-secondary" onclick="addSelectedItemToInvoice()" style="height:40px; padding: 0 16px;"><i data-lucide="plus"></i> Add Item</button>
+                                <button class="btn btn-secondary invoice-add-btn" onclick="addSelectedItemToInvoice()"><i data-lucide="plus"></i> Add Item</button>
                             </div>
                             
                             <!-- Add Custom Labor/Charges Panel -->
-                            <h3 style="font-size:0.9rem; color:var(--secondary); margin-bottom:12px;">Option B: Add Labor, Repairs, or Custom Services</h3>
-                            <div style="display:grid; grid-template-columns: 2fr 1fr 1fr auto; gap:16px; margin-bottom:24px; align-items:flex-end;">
-                                <div class="form-group" style="margin-bottom:0;">
+                            <h3 class="invoice-section-title option-b-title">Option B: Add Labor, Repairs, or Custom Services</h3>
+                            <div class="invoice-option-grid invoice-option-b">
+                                <div class="form-group desc-group">
                                     <label>Description / Job Work</label>
                                     <input type="text" id="inv-custom-desc" class="form-control" placeholder="e.g. Broken hinge repair work, OS install labor">
                                 </div>
-                                <div class="form-group" style="margin-bottom:0;">
+                                <div class="form-group price-group">
                                     <label>Service Fee (₹)</label>
                                     <input type="number" id="inv-custom-price" class="form-control" placeholder="500">
                                 </div>
-                                <div class="form-group" style="margin-bottom:0;">
+                                <div class="form-group qty-group">
                                     <label>Qty</label>
                                     <input type="number" id="inv-custom-qty" class="form-control" value="1" min="1">
                                 </div>
-                                <button class="btn btn-secondary" onclick="addCustomLineToInvoice()" style="height:40px; padding: 0 16px;"><i data-lucide="plus"></i> Add Service</button>
+                                <button class="btn btn-secondary invoice-add-btn" onclick="addCustomLineToInvoice()"><i data-lucide="plus"></i> Add Service</button>
                             </div>
                             
-                            <hr style="border:0; border-top: 1px solid var(--border-color); margin:20px 0;">
+                            <hr class="invoice-divider">
                             
                             <!-- Items List Table -->
-                            <div class="table-responsive">
+                            <div class="table-responsive invoice-table-wrapper">
                                 <table class="custom-table invoice-items-table">
                                     <thead>
                                         <tr>
-                                            <th style="width:50px;">#</th>
+                                            <th style="width:40px;">#</th>
                                             <th>Description</th>
                                             <th>Rate</th>
-                                            <th style="width:80px;">Qty</th>
-                                            <th>Total (₹)</th>
+                                            <th style="width:60px;">Qty</th>
+                                            <th style="text-align:right;">Total (₹)</th>
                                         </tr>
                                     </thead>
                                     <tbody id="invoice-lines-list">
@@ -461,7 +461,7 @@
                         </div>
                         
                         <!-- Right pane: Printable Layout Preview -->
-                        <div>
+                        <div class="invoice-preview-wrapper">
                             <p class="preview-title">Realtime Invoice Receipt Preview</p>
                             <div class="invoice-preview-card">
                                 <div class="actual-invoice-preview" id="print-area">
@@ -476,7 +476,7 @@
                                             <div><strong>Invoice To:</strong> <span id="preview-customer-name">Walk-in Customer</span></div>
                                             <div><strong>Contact No:</strong> <span id="preview-customer-phone">N/A</span></div>
                                         </div>
-                                        <div style="text-align: right;">
+                                        <div class="preview-meta-right">
                                             <div><strong>Invoice No:</strong> <span id="invoice-number-val">INV-102934</span></div>
                                             <div><strong>Date:</strong> <span id="invoice-date-val">27/06/2026</span></div>
                                         </div>
@@ -486,9 +486,9 @@
                                         <thead>
                                             <tr>
                                                 <th style="text-align:left;">Item / Work Description</th>
-                                                <th>Qty</th>
-                                                <th>Rate</th>
-                                                <th>Amount</th>
+                                                <th style="width:45px; text-align:center;">Qty</th>
+                                                <th style="width:65px; text-align:right;">Rate</th>
+                                                <th style="width:75px; text-align:right;">Amount</th>
                                             </tr>
                                         </thead>
                                         <tbody id="preview-items-list">
@@ -518,7 +518,7 @@
                                 </div>
                             </div>
                             
-                            <div style="display:flex; flex-direction:column; gap:10px; margin-top:20px;">
+                            <div class="invoice-action-buttons">
                                 <button class="btn btn-primary btn-wide" onclick="printReceipt()"><i data-lucide="printer"></i> Print Receipt & Process Sale</button>
                                 <button class="btn btn-secondary btn-wide btn-wa-green" onclick="shareInvoiceWhatsApp()"><i data-lucide="share-2"></i> Share Invoice on WhatsApp</button>
                             </div>

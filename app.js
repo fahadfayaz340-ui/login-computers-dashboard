@@ -836,7 +836,7 @@ function renderInvoiceLines() {
     let subtotal = 0;
     
     if (invoiceLines.length === 0) {
-        list.innerHTML = `<tr><td colspan="5" style="text-align:center; color:var(--text-muted);">No bill items added yet. Use panels above.</td></tr>`;
+        list.innerHTML = `<tr><td colspan="5" style="text-align:center; color:var(--text-muted); padding:16px 8px;">No bill items added yet. Use panels above.</td></tr>`;
         updateInvoicePreview(0);
         return;
     }
@@ -848,12 +848,14 @@ function renderInvoiceLines() {
         const tr = document.createElement("tr");
         tr.innerHTML = `
             <td>${idx + 1}</td>
-            <td>${line.name}</td>
+            <td style="font-weight:500;">${line.name}</td>
             <td>₹${line.price}</td>
             <td>${line.qty}</td>
-            <td style="display:flex; justify-content:space-between; align-items:center;">
-                ₹${itemTotal}
-                <button class="btn-delete-row" onclick="removeInvoiceLine('${line.id}')"><i data-lucide="minus-circle"></i></button>
+            <td style="text-align:right;">
+                <div style="display:inline-flex; align-items:center; gap:8px; justify-content:flex-end;">
+                    <span>₹${itemTotal}</span>
+                    <button class="btn-delete-row" title="Remove line" onclick="removeInvoiceLine('${line.id}')"><i data-lucide="minus-circle"></i></button>
+                </div>
             </td>
         `;
         list.appendChild(tr);
@@ -887,9 +889,9 @@ function updateInvoicePreview(subtotal) {
         const tr = document.createElement("tr");
         tr.innerHTML = `
             <td>${line.name}</td>
-            <td>${line.qty}</td>
-            <td>₹${line.price}</td>
-            <td>₹${line.price * line.qty}</td>
+            <td style="text-align:center;">${line.qty}</td>
+            <td style="text-align:right;">₹${line.price}</td>
+            <td style="text-align:right;">₹${line.price * line.qty}</td>
         `;
         previewList.appendChild(tr);
     });
@@ -936,13 +938,16 @@ function printReceipt() {
 
 function shareInvoiceWhatsApp() {
     const custName = document.getElementById("invoice-cust-name").value || "Customer";
-    const custPhone = document.getElementById("invoice-cust-phone").value;
+    const rawPhone = (document.getElementById("invoice-cust-phone").value || "").trim();
     const billNum = document.getElementById("invoice-number-val").textContent;
     
-    if (!custPhone) {
+    if (!rawPhone) {
         showToast("Please specify customer phone number to send WhatsApp.", "danger");
         return;
     }
+    
+    const cleanPhone = rawPhone.replace(/\D/g, "");
+    const phoneWithCountry = cleanPhone.length === 10 ? "91" + cleanPhone : cleanPhone;
     
     let subtotal = 0;
     let itemsText = "";
@@ -953,10 +958,10 @@ function shareInvoiceWhatsApp() {
     });
     
     const discount = parseFloat(document.getElementById("invoice-discount-input").value || 0);
-    const grandTotal = subtotal - discount;
+    const grandTotal = Math.max(0, subtotal - discount);
     
     const waText = encodeURIComponent(`*INVOICE SUMMARY*\n*Login Computers, Chadoora*\n\nBill No: ${billNum}\nCustomer: ${custName}\n----------------------------------\n*Items:*${itemsText}\n----------------------------------\n*Subtotal:* ₹${subtotal}\n*Discount:* -₹${discount}\n*Grand Total:* *₹${grandTotal}*\n\nThank you for shopping at Login Computers! For support, call 9906405769.`);
     
-    const url = `https://wa.me/91${custPhone}?text=${waText}`;
+    const url = `https://wa.me/${phoneWithCountry}?text=${waText}`;
     window.open(url, "_blank");
 }

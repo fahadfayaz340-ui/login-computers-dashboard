@@ -1051,25 +1051,96 @@ textarea.form-control {
     margin-bottom: 24px;
 }
 
+.invoice-divider {
+    border: 0;
+    border-top: 1px solid var(--border-color);
+    margin: 20px 0;
+}
+
+.invoice-section-title {
+    font-size: 0.9rem;
+    margin-bottom: 12px;
+}
+.invoice-section-title.option-a-title {
+    color: var(--primary);
+}
+.invoice-section-title.option-b-title {
+    color: var(--secondary);
+}
+
+.invoice-option-row {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 20px;
+    align-items: flex-end;
+    flex-wrap: wrap;
+}
+
+.invoice-option-a .item-select-group {
+    flex: 1 1 200px;
+    margin-bottom: 0;
+}
+
+.invoice-option-a .item-qty-group {
+    width: 100px;
+    margin-bottom: 0;
+}
+
+.invoice-add-btn {
+    height: 42px;
+    padding: 0 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    white-space: nowrap;
+    font-weight: 500;
+}
+
+.invoice-option-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr auto;
+    gap: 16px;
+    margin-bottom: 24px;
+    align-items: flex-end;
+}
+
+.invoice-option-b .form-group {
+    margin-bottom: 0;
+}
+
+.invoice-table-wrapper {
+    margin-bottom: 16px;
+}
+
 .invoice-items-table th {
     font-size: 0.75rem;
     padding: 10px;
 }
 
 .invoice-items-table td {
-    padding: 8px;
+    padding: 8px 10px;
+    font-size: 0.85rem;
 }
 
 .btn-delete-row {
     color: #f43f5e;
-    background: none;
-    border: none;
+    background: rgba(244, 63, 94, 0.08);
+    border: 1px solid rgba(244, 63, 94, 0.2);
+    border-radius: 6px;
     cursor: pointer;
     font-size: 1.1rem;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
+    width: 32px;
+    height: 32px;
     flex-shrink: 0;
+    transition: var(--transition-smooth);
+}
+
+.btn-delete-row:hover {
+    background: rgba(244, 63, 94, 0.2);
 }
 
 .invoice-totals {
@@ -1108,6 +1179,7 @@ textarea.form-control {
     border-radius: 8px;
     padding: 20px;
     color: #000;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 .actual-invoice-preview {
@@ -1135,6 +1207,10 @@ textarea.form-control {
     font-size: 0.75rem;
 }
 
+.preview-meta-right {
+    text-align: right;
+}
+
 .preview-table {
     width: 100%;
     border-collapse: collapse;
@@ -1146,6 +1222,7 @@ textarea.form-control {
     border: 1px solid #ddd;
     padding: 6px;
     text-align: left;
+    word-break: break-word;
 }
 
 .preview-table th {
@@ -1177,6 +1254,13 @@ textarea.form-control {
     margin-top: 15px;
     font-size: 0.7rem;
     color: #555;
+}
+
+.invoice-action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
 }
 
 /* Toast Notifications */
@@ -1429,6 +1513,67 @@ textarea.form-control {
 
     .filters-group {
         flex-wrap: wrap;
+    }
+
+    /* Invoice Mobile Optimizations */
+    .invoice-builder-card {
+        padding: 14px 12px;
+    }
+
+    .invoice-header-fields {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        margin-bottom: 16px;
+    }
+
+    .invoice-option-a {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        align-items: stretch;
+    }
+
+    .invoice-option-a .item-select-group,
+    .invoice-option-a .item-qty-group,
+    .invoice-option-a .invoice-add-btn {
+        width: 100%;
+        flex: none;
+    }
+
+    .invoice-option-b {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        align-items: stretch;
+    }
+
+    .invoice-option-b .form-group,
+    .invoice-option-b .invoice-add-btn {
+        width: 100%;
+    }
+
+    .invoice-totals {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    .preview-meta {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    .preview-meta-right {
+        text-align: left;
+    }
+
+    .invoice-preview-card {
+        padding: 12px;
+    }
+
+    .invoice-items-table th,
+    .invoice-items-table td {
+        padding: 8px 6px;
+        font-size: 0.8rem;
     }
 }
 
