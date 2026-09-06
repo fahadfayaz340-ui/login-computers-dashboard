@@ -2,6 +2,17 @@
 
 A premium, responsive, and highly interactive admin application built for **Login Computers** (located in Chadoora, Budgam) to manage customer repairs, inventory stock, calculate monthly earnings, and generate invoices with WhatsApp sharing.
 
+## 📱 Android App Releases
+
+Download and install the APK on your Android phone to manage shop operations on the go:
+
+| Version | Release Date | Status | APK Download | Highlights |
+| :--- | :--- | :--- | :--- | :--- |
+| [**v1.0.1**](https://github.com/fahadfayaz340-ui/login-computers-dashboard/releases/tag/v1.0.1) | Sep 6, 2026 | 🟢 Latest | [📥 Download APK (v1.0.1)](https://github.com/fahadfayaz340-ui/login-computers-dashboard/releases/download/v1.0.1/login-computers-dashboard.apk) | Mobile layout fixes & create invoice optimizations |
+| [**v1.0.0**](https://github.com/fahadfayaz340-ui/login-computers-dashboard/releases/tag/v1.0.0) | Sep 5, 2026 | ⚪ Stable | [📥 Download APK (v1.0.0)](https://github.com/fahadfayaz340-ui/login-computers-dashboard/releases/download/v1.0.0/login-computers-dashboard.apk) | Initial release with Repair Tracker, Inventory & WhatsApp billing |
+
+---
+
 ## 🚀 Key Features
 
 1. **Dashboard Home View**:
